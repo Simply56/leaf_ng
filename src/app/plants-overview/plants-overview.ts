@@ -13,16 +13,16 @@ import { CommonModule } from '@angular/common';
 })
 export class PlantsOverview {
   protected plants: plantInfo[] = [
-    {
-      id: 0,
-      name: "amelie",
-      imagePath: 'favicon.png',
-    },
-    {
-      id: 1,
-      name: "amelie",
-      imagePath: 'favicon.png',
-    }
+    // {
+    //   id: 0,
+    //   name: "amelie",
+    //   imagePath: 'favicon.png',
+    // },
+    // {
+    //   id: 1,
+    //   name: "amelie",
+    //   imagePath: 'favicon.png',
+    // }
   ];
 
 }

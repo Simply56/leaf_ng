@@ -1,7 +1,7 @@
 <h1>L.E.A.F.</h1>
 <app-create-plant />
 <div class="plants-list">
-    @if (plants != null) {
+    @if (plants && plants.length > 0) {
     <app-plant-quick-info *ngFor="let plant of plants" [plantInfo]="plant" />
     } @else{
     <p>No plants added yet.</p>

@@ -71,6 +71,7 @@ button:hover {
 }
 
 .plants-list {
+    padding: 1%;
     display: grid;
     gap: 20px;
 }

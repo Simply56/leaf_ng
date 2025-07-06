@@ -1,4 +1,4 @@
-export default interface utc1plantInfo {
+export default interface plantInfo {
     id: number;
     imagePath: string;
     lastWatered?: Date;

@@ -24,12 +24,12 @@
         title="Click to change image"
     />
     <h3>{{ plantInfo.name }}</h3>
-    @if (wateredDaysAgo){
+    @if (wateredDaysAgo !== undefined){
     <p>
         Days since last watering:
-        <!-- <span style="color: {{ value_to_color(plant.watered_ago) }}">{{
-        }}</span> -->
-        {{ wateredDaysAgo }}
+        <span [style.color]="value_to_color(wateredDaysAgo)">
+            {{ wateredDaysAgo }}
+        </span>
     </p>
     } @else{
     <p>Never watered</p>

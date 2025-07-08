@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import plantInfo from '../models/plantInfo.model';
 
 @Component({
@@ -7,21 +7,29 @@ import plantInfo from '../models/plantInfo.model';
   templateUrl: './plant-quick-info.html',
   styleUrl: './plant-quick-info.css'
 })
-export class PlantQuickInfo {
+export class PlantQuickInfo implements OnInit {
   @Input() plantInfo!: plantInfo;
-  wateredDaysAgo: number | null = this.computeWateredDaysAgo();
+  wateredDaysAgo?: number;
 
-  computeWateredDaysAgo(): number | null {
-    return 0;
-    // if (this.plantInfo.lastWatered == null) {
-    //   return null;
-    // }
-    // const now: Date = new Date();
-    // const utcThen = Date.UTC(this.plantInfo.lastWatered.getFullYear(), this.plantInfo.lastWatered.getMonth(), this.plantInfo.lastWatered.getDate());
-    // const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 
-    // return utcNow - utcThen;
+  ngOnInit(): void {
+    this.wateredDaysAgo = this.computeWateredDaysAgo();
   }
 
+  computeWateredDaysAgo(): number | undefined {
+    if (this.plantInfo.lastWatered == null) {
+      return undefined;
+    }
 
+    const difInMilis =  Date.now() - this.plantInfo.lastWatered.getTime()
+    const difInDays = difInMilis / (1000 * 60 * 60 * 24);
+
+    return Math.trunc(difInDays);
+  }
+
+  value_to_color(value: number, max_value: number = 10) {
+    const ratio = Math.min(value / max_value, 1);
+    const hue = Math.trunc(120 - 120 * ratio);  // 120 = green, 0 = red;
+    return `hsl(${hue}, 100%, 40%)`;
+  }
 }

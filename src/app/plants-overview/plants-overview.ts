@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CreatePlant } from "../create-plant/create-plant";
-import { App } from '../app';
 import plantInfo from '../models/plantInfo.model';
 import { PlantQuickInfo } from "../plant-quick-info/plant-quick-info";
 import { CommonModule } from '@angular/common';
@@ -13,16 +12,18 @@ import { CommonModule } from '@angular/common';
 })
 export class PlantsOverview {
   protected plants: plantInfo[] = [
-    // {
-    //   id: 0,
-    //   name: "amelie",
-    //   imagePath: 'favicon.png',
-    // },
-    // {
-    //   id: 1,
-    //   name: "amelie",
-    //   imagePath: 'favicon.png',
-    // }
+    {
+      id: 0,
+      name: "amelie",
+      imagePath: 'favicon.png',
+      lastWatered: new Date(2025, 6, 4)
+    },
+    {
+      id: 1,
+      name: "joline",
+      imagePath: 'favicon.png',
+      lastWatered: new Date()
+    }
   ];
 
 }

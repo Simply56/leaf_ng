@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CreatePlant } from "../create-plant/create-plant";
-import plantInfo from '../models/plantInfo.model';
 import { PlantQuickInfo } from "../plant-quick-info/plant-quick-info";
 import { CommonModule } from '@angular/common';
+import plantInfo from '../models/plantInfo.model';
+import { PlantsService } from '../plants-service';
 
 @Component({
   selector: 'app-plants-overview',
@@ -11,19 +12,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './plants-overview.css'
 })
 export class PlantsOverview {
-  protected plants: plantInfo[] = [
-    {
-      id: 0,
-      name: "amelie",
-      imagePath: 'favicon.png',
-      lastWatered: new Date(2025, 6, 4)
-    },
-    {
-      id: 1,
-      name: "joline",
-      imagePath: 'favicon.png',
-      lastWatered: new Date()
-    }
-  ];
-
+  protected plants: plantInfo[];
+  private plantsService: PlantsService = inject(PlantsService);
+  constructor() {
+    this.plants = this.plantsService.getAllPlants();
+  }
 }

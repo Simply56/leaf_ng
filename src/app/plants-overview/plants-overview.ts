@@ -6,15 +6,14 @@ import plantInfo from '../models/plantInfo.model';
 import { PlantsService } from '../plants-service';
 
 @Component({
-  selector: 'app-plants-overview',
-  imports: [CreatePlant, CommonModule, PlantQuickInfo],
-  templateUrl: './plants-overview.html',
-  styleUrl: './plants-overview.css'
+    selector: 'app-plants-overview',
+    imports: [CreatePlant, CommonModule, PlantQuickInfo],
+    templateUrl: './plants-overview.html',
 })
 export class PlantsOverview {
-  protected plants: plantInfo[];
-  private plantsService: PlantsService = inject(PlantsService);
-  constructor() {
-    this.plants = this.plantsService.getAllPlants();
-  }
+    protected plants: plantInfo[];
+    private plantsService: PlantsService = inject(PlantsService);
+    constructor() {
+        this.plants = this.plantsService.getAllPlants();
+    }
 }

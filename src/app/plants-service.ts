@@ -20,8 +20,6 @@ export class PlantsService {
     }
   ];
 
-  constructor() { }
-
   getAllPlants(): plantInfo[] {
     return this.plantsList;
   }

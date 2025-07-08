@@ -1,1 +1,115 @@
-<p>plant-details works!</p>
+@if (plant != null) {
+<div class="plant-status">
+    <h1 id="plant_title" contenteditable="true">{{ plant.name }}</h1>
+    <script>
+        // TODO: EXPORT TO COMPONENT METHOD
+        const h1 = document.getElementById("plant_title");
+
+        h1.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                renamePlant(h1.textContent);
+            }
+        });
+
+        function renamePlant(newName) {
+            const plantId = window.location.pathname.split("/").pop();
+            const formData = new FormData();
+            formData.append("new_name", newName);
+
+            fetch(`/rename/${plantId}`, {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => {
+                    if (response.redirected) {
+                        window.location.href = response.url; // Follow the redirect manually
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error renaming plant:", error);
+                });
+        }
+    </script>
+
+    <!-- action="{{ url_for('upload_image', plant_id=plant_id) }}" -->
+    <form
+        id="imageUploadForm"
+        method="post"
+        enctype="multipart/form-data"
+        style="display: none"
+    >
+        <input
+            type="file"
+            id="imageInput"
+            name="image"
+            accept="image/*"
+            onchange="this.form.submit()"
+        />
+    </form>
+
+    <img
+        src="favicon.png"
+        alt="{{ plant.name }}"
+        class="plant-detail-image"
+        onclick="document.getElementById('imageInput').click()"
+        style="cursor: pointer"
+        title="Click to change image"
+    />
+
+    <div class="watering-info">
+        @if (plant.lastWatered == null) {
+        <p>This plant has never been watered.</p>
+        } @else {
+
+        <p>Last watered: {{ plant.lastWatered | date : "fullDate" }}</p>
+
+        <p>
+            Days since last watering:
+            <span
+                [style.color]="
+                    plant.lastWatered | computeWateredDaysAgo | valueToColor
+                "
+            >
+                {{ plant.lastWatered | computeWateredDaysAgo }}
+            </span>
+        </p>
+        }
+    </div>
+
+    <!-- action="{{ url_for('water_plant', plant_id=plant_id) }}" -->
+    <form method="post">
+        <div class="datetime-picker">
+            <label for="watering_time">When did you water this plant?</label>
+
+            <!-- value="{{ now.isoformat() }}" -->
+            <input type="date" id="watering_time" name="watering_time" />
+        </div>
+        <button type="submit" class="water-button">Log Watering</button>
+    </form>
+
+    <script>
+        function focusQrInfo() {
+            const qrElem = document.getElementsByClassName("qr-info")[0];
+            qrElem.requestFullscreen();
+        }
+    </script>
+    <div
+        class="qr-info"
+        allowfullscreen
+        allow="fullscreen"
+        onclick="focusQrInfo()"
+    >
+        <h2>QR Code Information</h2>
+        <p>Paste this into a QR code generator and stick it on it's pot</p>
+        <p class="qr-url">{{ baseUrl }}{{ router.url }}</p>
+    </div>
+
+    <div class="button-container">
+        <button routerLink="">Back to Plants</button>
+        <button class="button delete-button" (click)="deletePlant()">
+            Delete {{ plant.name }}
+        </button>
+    </div>
+</div>
+}

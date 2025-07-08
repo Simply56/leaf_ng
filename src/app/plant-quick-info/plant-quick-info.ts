@@ -1,35 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ValueToColorPipe } from "../value-to-color-pipe";
 import plantInfo from '../models/plantInfo.model';
+import { ComputeWateredDaysAgoPipe } from "../compute-watered-days-ago-pipe";
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-plant-quick-info',
-  imports: [],
-  templateUrl: './plant-quick-info.html',
-  styleUrl: './plant-quick-info.css'
+    selector: 'app-plant-quick-info',
+    imports: [ValueToColorPipe, ComputeWateredDaysAgoPipe, RouterLink],
+    templateUrl: './plant-quick-info.html',
 })
-export class PlantQuickInfo implements OnInit {
-  @Input() plantInfo!: plantInfo;
-  wateredDaysAgo?: number;
-
-
-  ngOnInit(): void {
-    this.wateredDaysAgo = this.computeWateredDaysAgo();
-  }
-
-  computeWateredDaysAgo(): number | undefined {
-    if (this.plantInfo.lastWatered == null) {
-      return undefined;
-    }
-
-    const difInMilis =  Date.now() - this.plantInfo.lastWatered.getTime()
-    const difInDays = difInMilis / (1000 * 60 * 60 * 24);
-
-    return Math.trunc(difInDays);
-  }
-
-  value_to_color(value: number, max_value: number = 10) {
-    const ratio = Math.min(value / max_value, 1);
-    const hue = Math.trunc(120 - 120 * ratio);  // 120 = green, 0 = red;
-    return `hsl(${hue}, 100%, 40%)`;
-  }
+export class PlantQuickInfo {
+    @Input() plantInfo!: plantInfo;
 }

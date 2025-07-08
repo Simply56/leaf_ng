@@ -10,7 +10,7 @@
 
 * {
     margin: 0;
-    padding: 0;
+    padding: 1%;
     box-sizing: border-box;
 }
 
@@ -94,7 +94,7 @@ button:hover {
     margin-bottom: calc(var(--spacing-unit) * 1.5);
 }
 
-.button {
+button {
     display: inline-block;
     background-color: var(--primary-color);
     color: white;
@@ -108,7 +108,7 @@ button:hover {
     transition: background-color 0.3s;
 }
 
-.button:hover {
+button:hover {
     background-color: #45a049;
 }
 
@@ -214,11 +214,6 @@ button:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.delete-form {
-    margin: 0;
-    display: inline-block;
-    line-height: 0;
-}
 
 .delete-button {
     background-color: #dc3545;

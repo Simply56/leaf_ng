@@ -24,15 +24,19 @@
         title="Click to change image"
     />
     <h3>{{ plantInfo.name }}</h3>
-    @if (wateredDaysAgo !== undefined){
+    @if ((plantInfo.lastWatered ) != null){
     <p>
         Days since last watering:
-        <span [style.color]="value_to_color(wateredDaysAgo)">
-            {{ wateredDaysAgo }}
+        <span
+            [style.color]="
+                plantInfo.lastWatered | computeWateredDaysAgo | valueToColor
+            "
+        >
+            {{ plantInfo.lastWatered | computeWateredDaysAgo }}
         </span>
     </p>
     } @else{
     <p>Never watered</p>
     }
-    <a href="/plant/{{ plantInfo.id }}" class="button">View Details</a>
+    <button [routerLink]="['plant', plantInfo.id]">View Details</button>
 </div>

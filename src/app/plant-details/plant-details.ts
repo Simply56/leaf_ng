@@ -25,7 +25,9 @@ export class PlantDetails {
 
     constructor() {
         const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.plant = this.plantService.getPlantById(id);
+        this.plantService.getPlantById(id).subscribe(plant => {
+            this.plant = plant;
+        });
         if (this.plant == null) {
             this.router.navigate(['']);
         }

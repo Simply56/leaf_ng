@@ -14,6 +14,8 @@ export class PlantsOverview {
     protected plants: plantInfo[] = [];
     private plantsService: PlantsService = inject(PlantsService);
     constructor() {
-        this.plants = this.plantsService.getAllPlants();
+        this.plantsService.allPlants$.subscribe(plants => {
+            this.plants = plants;
+        });
     }
 }

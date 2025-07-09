@@ -3,10 +3,10 @@ import {
     inject,
     Injectable,
     Signal,
-    computedAsync
 } from '@angular/core';
 import plantInfo from './models/plantInfo.model';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -16,13 +16,12 @@ export class PlantsService {
 
     url = 'http://localhost:8080';
 
-allPlants = computedAsync(
-  this.http.get<plantInfo[]>(`${this.url}/plants`),
-  []
-);
+    allPlants$ = (
+        this.http.get<plantInfo[]>(`${this.url}/plants`)
+    );
 
 
-    getPlantById(id: number): Signal<plantInfo | undefined> {
-        return computed(() => this.getAllPlants()()
+    getPlantById(id: number) {
+        return this.allPlants$.pipe(map((plants => plants.find((p => p.id == id)))));
     }
 }

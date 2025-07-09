@@ -1,31 +1,28 @@
-import { Injectable } from '@angular/core';
+import {
+    computed,
+    inject,
+    Injectable,
+    Signal,
+    computedAsync
+} from '@angular/core';
 import plantInfo from './models/plantInfo.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class PlantsService {
-  protected plantsList: plantInfo[] = [
-    {
-      id: 0,
-      name: "amelie",
-      imagePath: 'favicon.png',
-      lastWatered: new Date(2025, 6, 4)
-    },
-    {
-      id: 1,
-      name: "joline",
-      imagePath: 'favicon.png',
-      lastWatered: new Date()
+    private http = inject(HttpClient);
+
+    url = 'http://localhost:8080';
+
+allPlants = computedAsync(
+  this.http.get<plantInfo[]>(`${this.url}/plants`),
+  []
+);
+
+
+    getPlantById(id: number): Signal<plantInfo | undefined> {
+        return computed(() => this.getAllPlants()()
     }
-  ];
-
-  getAllPlants(): plantInfo[] {
-    return this.plantsList;
-  }
-
-  getPlantById(id: number): plantInfo | undefined {
-    return this.plantsList.find((p) => p.id === id);
-
-  }
 }

@@ -27,10 +27,10 @@ export class PlantDetails {
         const id = Number(this.route.snapshot.paramMap.get('id'));
         this.plantService.getPlantById(id).subscribe(plant => {
             this.plant = plant;
+            if (this.plant == null) {
+                this.router.navigate(['']);
+            }
         });
-        if (this.plant == null) {
-            this.router.navigate(['']);
-        }
     }
 
     deletePlant() {

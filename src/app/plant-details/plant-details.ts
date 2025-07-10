@@ -5,6 +5,7 @@ import { PlantsService } from '../plants-service';
 import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
 import { ValueToColorPipe } from '../value-to-color-pipe';
 import { DatePipe } from '@angular/common';
+import { PlantPicture } from '../plant-picture/plant-picture';
 
 @Component({
     selector: 'app-plant-details',
@@ -13,6 +14,7 @@ import { DatePipe } from '@angular/common';
         ValueToColorPipe,
         DatePipe,
         RouterLink,
+        PlantPicture,
     ],
     templateUrl: './plant-details.html',
 })
@@ -25,7 +27,7 @@ export class PlantDetails {
 
     constructor() {
         const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.plantService.getPlantById(id).subscribe(plant => {
+        this.plantService.getPlantById(id).subscribe((plant) => {
             this.plant = plant;
             if (this.plant == null) {
                 this.router.navigate(['']);
@@ -34,6 +36,12 @@ export class PlantDetails {
     }
 
     deletePlant() {
-        confirm('Are you sure you want to delete this plant?');
+        if (
+            this.plant != null &&
+            confirm('Are you sure you want to delete this plant?')
+        ) {
+            this.plantService.deletePlant(this.plant.id);
+            this.router.navigate(['']);
+        }
     }
 }

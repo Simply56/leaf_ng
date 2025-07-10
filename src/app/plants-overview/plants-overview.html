@@ -2,7 +2,10 @@
 <app-create-plant />
 <div class="plants-list">
     @if (plants && plants.length > 0) {
-    <app-plant-quick-info *ngFor="let plant of plants" [plantInfo]="plant" />
+    <app-plant-quick-info
+        *ngFor="let plant of plants"
+        [plantInfo]="signal(plant)"
+    />
     } @else{
     <p>No plants added yet.</p>
     }

@@ -32,30 +32,7 @@
         }
     </script>
 
-    <!-- action="{{ url_for('upload_image', plant_id=plant_id) }}" -->
-    <form
-        id="imageUploadForm"
-        method="post"
-        enctype="multipart/form-data"
-        style="display: none"
-    >
-        <input
-            type="file"
-            id="imageInput"
-            name="image"
-            accept="image/*"
-            onchange="this.form.submit()"
-        />
-    </form>
-
-    <img
-        src="favicon.png"
-        alt="{{ plant.name }}"
-        class="plant-detail-image"
-        onclick="document.getElementById('imageInput').click()"
-        style="cursor: pointer"
-        title="Click to change image"
-    />
+    <app-plant-picture [plant]="plant" />
 
     <div class="watering-info">
         @if (plant.lastWatered == null) {

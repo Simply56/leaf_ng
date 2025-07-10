@@ -1,28 +1,5 @@
 <div class="plant-card">
-    <!-- action="{{ url_for('upload_image', plant_id=plant_id) }}" -->
-    <form
-        id="imageUploadForm{{ plantInfo.id }}"
-        method="post"
-        enctype="multipart/form-data"
-        style="display: none"
-    >
-        <input
-            type="file"
-            id="imageInput{{ plantInfo.id }}"
-            name="image"
-            accept="image/*"
-            onchange="this.form.submit()"
-        />
-    </form>
-
-    <!-- (click)="document.getElementById('imageInput{{ plant_id }}').click()" -->
-    <img
-        [src]="plantInfo.imagePath"
-        [alt]="plantInfo.name"
-        class="plant-image"
-        style="cursor: pointer"
-        title="Click to change image"
-    />
+    <app-plant-picture [plant]="plantInfo" />
     <h3>{{ plantInfo.name }}</h3>
     @if ((plantInfo.lastWatered ) != null){
     <p>

@@ -1,22 +1,38 @@
-import { computed, inject, Injectable, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import plantInfo from './models/plantInfo.model';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { from, map, switchMap } from 'rxjs';
+import { ApiDiscoveryService } from './api-discovery-service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PlantsService {
     private http = inject(HttpClient);
+    private discovery: ApiDiscoveryService = inject(ApiDiscoveryService);
 
-    url = 'http://localhost:8080';
+    urlPromise: Promise<string> = new Promise((resolve, reject) => {
+        this.discovery.discoverBackend().then(ip => {
+            if (ip != null) {
+                resolve(`http://${ip}:8080`);
+            };
+            reject();
+        });
+    });
 
-    allPlants$ = this.http.get<plantInfo[]>(`${this.url}/plants`).pipe(
-        map((plants) =>
-            plants.map((p) => {
-                p.imagePath = this.url + p.imagePath.slice(1);
-                return p;
-            })
+    allPlants$ = from(this.urlPromise).pipe(
+        switchMap((url) =>
+            this.http.get<plantInfo[]>(`${url}/plants`)
+                .pipe(
+                    map((plants) =>
+                        plants.map((p) => {
+                            console.log(url);
+                            p.imagePath = url + p.imagePath.slice(1);
+                            console.log(p.imagePath);
+                            return p;
+                        })
+                    )
+                )
         )
     );
 
@@ -27,21 +43,39 @@ export class PlantsService {
     }
 
     addPlant(name: string) {
-        this.http.post(`${this.url}/plants`, { name: name }).subscribe();
+        this.urlPromise.then(
+            (url) => {
+                this.http.post(`${url}/plants`, { name: name }).subscribe();
+            }
+        );
     }
 
     renamePlant(newName: string, id: number) {
-        this.http
-            .put(`${this.url}/plants/${id}`, { name: newName })
-            .subscribe();
+
+        this.urlPromise.then(
+            (url) => {
+                this.http
+                    .put(`${url}/plants/${id}`, { name: newName })
+                    .subscribe();
+            }
+        );
     }
 
     waterPlant(id: number) {
-        this.http.put(`${this.url}/plants/${id}/water`, {}).subscribe();
+        this.urlPromise.then(
+            (url) => {
+                this.http.put(`${url}/plants/${id}/water`, {}).subscribe();
+            }
+        );
     }
 
     deletePlant(id: number) {
-        this.http.delete(`${this.url}/plants/${id}`).subscribe();
+
+        this.urlPromise.then(
+            (url) => {
+                this.http.delete(`${url}/plants/${id}`).subscribe();
+            }
+        );
     }
 
     updatePlantImage(id: number, image: File | undefined) {
@@ -49,8 +83,11 @@ export class PlantsService {
             console.log('image is undefined');
             return;
         }
-        const formData = new FormData();
-        formData.append('image', image);
-        return this.http.put<string>(`${this.url}/images/${id}`, formData);
+
+        return from(this.urlPromise).pipe(switchMap((url) => {
+            const formData = new FormData();
+            formData.append('image', image);
+            return this.http.put(`${url}/images/${id}`, formData);
+        }));
     }
 }

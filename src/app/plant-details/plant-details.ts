@@ -5,17 +5,17 @@ import { PlantsService } from '../plants-service';
 import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
 import { ValueToColorPipe } from '../value-to-color-pipe';
 import { DatePipe } from '@angular/common';
-import { PlantPicture } from '../plant-picture/plant-picture';
+import { PlantImage } from "../plant-image/plant-image";
 
 @Component({
     selector: 'app-plant-details',
     imports: [
-        ComputeWateredDaysAgoPipe,
-        ValueToColorPipe,
-        DatePipe,
-        RouterLink,
-        PlantPicture,
-    ],
+    ComputeWateredDaysAgoPipe,
+    ValueToColorPipe,
+    DatePipe,
+    RouterLink,
+    PlantImage
+],
     templateUrl: './plant-details.html',
 })
 export class PlantDetails {

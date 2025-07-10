@@ -1,0 +1,23 @@
+<form
+    id="imageUploadForm"
+    method="post"
+    enctype="multipart/form-data"
+    style="display: none"
+>
+    <input
+        type="file"
+        id="imageInput"
+        name="image"
+        accept="image/*"
+        onchange="this.form.submit()"
+    />
+</form>
+
+<img
+    [src]="plant.imagePath"
+    [alt]="plant.name"
+    class="plant-detail-image"
+    onclick="document.getElementById('imageInput').click()"
+    style="cursor: pointer"
+    title="Click to change image"
+/>

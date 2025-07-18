@@ -6,7 +6,6 @@ import { PlantsService } from '../plants-service';
     selector: 'app-plant-image',
     imports: [],
     templateUrl: './plant-image.html',
-    styleUrl: './plant-image.css'
 })
 export class PlantImage {
     service: PlantsService = inject(PlantsService);
@@ -14,12 +13,7 @@ export class PlantImage {
     @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
 
     updateImage() {
-        console.log(this.imageInput.nativeElement.files?.[0]);
-        this.service.updatePlantImage(this.plant.id, this.imageInput.nativeElement.files?.[0])?.subscribe(
-            () => {
-                this.plant.imagePath += "?t=1";
-            }
-        );
+        this.service.updatePlantImage(this.plant, this.imageInput.nativeElement.files?.[0]);
     }
 
 }

@@ -1,19 +1,19 @@
 <div class="plant-card">
-    <app-plant-image [plant]="plantInfo" />
-    <h3>{{ plantInfo.name }}</h3>
-    @if ((plantInfo.lastWatered ) != null){
+    <app-plant-image [plant]="plant" />
+    <h3>{{ plant.name }}</h3>
+    @if ((plant.lastWatered ) != null){
     <p>
         Days since last watering:
         <span
             [style.color]="
-                plantInfo.lastWatered | computeWateredDaysAgo | valueToColor
+                plant.lastWatered | computeWateredDaysAgo | valueToColor
             "
         >
-            {{ plantInfo.lastWatered | computeWateredDaysAgo }}
+            {{ plant.lastWatered | computeWateredDaysAgo }}
         </span>
     </p>
     } @else{
     <p>Never watered</p>
     }
-    <button [routerLink]="['plant', plantInfo.id]">View Details</button>
+    <button [routerLink]="['plant', plant.id]">View Details</button>
 </div>

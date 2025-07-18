@@ -26,9 +26,7 @@ export class PlantsService {
                 .pipe(
                     map((plants) =>
                         plants.map((p) => {
-                            console.log(url);
                             p.imagePath = url + p.imagePath.slice(1);
-                            console.log(p.imagePath);
                             return p;
                         })
                     )
@@ -78,16 +76,26 @@ export class PlantsService {
         );
     }
 
-    updatePlantImage(id: number, image: File | undefined) {
+    updatePlantImage(plant: plantInfo, image: File | undefined) {
+        interface IResponse {
+            message: string;
+            newPath: string;
+        }
         if (image == undefined) {
             console.log('image is undefined');
             return;
         }
-
-        return from(this.urlPromise).pipe(switchMap((url) => {
+        this.urlPromise.then((url) => {
+            plant.imagePath = url;
             const formData = new FormData();
             formData.append('image', image);
-            return this.http.put(`${url}/images/${id}`, formData);
-        }));
+            return this.http.put<IResponse>(`${url}/images/${plant.id}`, formData);
+        }).then(resObs => {
+            resObs.subscribe(res => {
+                plant.imagePath += res.newPath.slice(1);
+                console.log(plant.imagePath);
+            });
+
+        });
     }
 }

@@ -16,9 +16,5 @@ import { PlantImage } from '../plant-image/plant-image';
     templateUrl: './plant-quick-info.html',
 })
 export class PlantQuickInfo {
-    @Input() plantInfo!: plantInfo;
-
-    submitted() {
-        console.log('submitted');
-    }
+    @Input() plant!: plantInfo;
 }

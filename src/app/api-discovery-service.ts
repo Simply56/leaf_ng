@@ -16,6 +16,7 @@ export class ApiDiscoveryService {
         const result = new Promise<string | null>(res => resolveMatch = res);
 
         for (const ip of ips) {
+            console.log("checking: " + ip);
             const controller = new AbortController();
             controllers.set(ip, controller);
 

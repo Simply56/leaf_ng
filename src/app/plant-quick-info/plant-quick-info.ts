@@ -14,6 +14,7 @@ import { PlantImage } from '../plant-image/plant-image';
         PlantImage
     ],
     templateUrl: './plant-quick-info.html',
+    styleUrl: './plant-quick-info.css'
 })
 export class PlantQuickInfo {
     @Input() plant!: plantInfo;

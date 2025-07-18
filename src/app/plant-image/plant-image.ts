@@ -1,10 +1,11 @@
 import { Component, ElementRef, inject, Input, ViewChild, } from '@angular/core';
 import plantInfo from '../models/plantInfo.model';
 import { PlantsService } from '../plants-service';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
     selector: 'app-plant-image',
-    imports: [],
+    imports: [NgOptimizedImage],
     templateUrl: './plant-image.html',
 })
 export class PlantImage {

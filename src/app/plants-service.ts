@@ -92,7 +92,7 @@ export class PlantsService {
             return this.http.put<IResponse>(`${url}/images/${plant.id}`, formData);
         }).then(resObs => {
             resObs.subscribe(res => {
-                plant.imagePath += res.newPath.slice(1);
+                plant.imagePath += res.newPath.slice(1); // remove leading '.'
                 console.log(plant.imagePath);
             });
 

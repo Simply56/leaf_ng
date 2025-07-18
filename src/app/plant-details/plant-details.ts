@@ -6,16 +6,19 @@ import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
 import { ValueToColorPipe } from '../value-to-color-pipe';
 import { DatePipe } from '@angular/common';
 import { PlantImage } from "../plant-image/plant-image";
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-plant-details',
     imports: [
-    ComputeWateredDaysAgoPipe,
-    ValueToColorPipe,
-    DatePipe,
-    RouterLink,
-    PlantImage
-],
+        ComputeWateredDaysAgoPipe,
+        ValueToColorPipe,
+        DatePipe,
+        RouterLink,
+        PlantImage,
+        FormsModule
+
+    ],
     templateUrl: './plant-details.html',
 })
 export class PlantDetails {
@@ -24,6 +27,7 @@ export class PlantDetails {
     route: ActivatedRoute = inject(ActivatedRoute);
     plant: plantInfo | undefined;
     baseUrl: string = window.location.origin;
+    selectedDate: string;
 
     constructor() {
         const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -33,6 +37,8 @@ export class PlantDetails {
                 this.router.navigate(['']);
             }
         });
+        const today = new Date();
+        this.selectedDate = today.toISOString().split('T')[0];
     }
 
     deletePlant() {
@@ -43,5 +49,12 @@ export class PlantDetails {
             this.plantService.deletePlant(this.plant.id);
             this.router.navigate(['']);
         }
+    }
+
+    waterPlant() {
+        if (this.plant == undefined) {
+            return;
+        }
+        this.plantService.waterPlant(this.plant.id, this.selectedDate);
     }
 }

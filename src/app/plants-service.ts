@@ -59,10 +59,10 @@ export class PlantsService {
         );
     }
 
-    waterPlant(id: number) {
+    waterPlant(id: number, ISODate: string) {
         this.urlPromise.then(
             (url) => {
-                this.http.put(`${url}/plants/${id}/water`, {}).subscribe();
+                this.http.put(`${url}/plants/${id}/water`, { ISODate: ISODate }).subscribe();
             }
         );
     }

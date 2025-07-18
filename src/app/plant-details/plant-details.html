@@ -1,7 +1,7 @@
 @if (plant != null) {
 <div class="plant-status">
     <h1 id="plant_title" contenteditable="true">{{ plant.name }}</h1>
-    <script>
+    <!-- <script>
         // TODO: EXPORT TO COMPONENT METHOD
         const h1 = document.getElementById("plant_title");
 
@@ -30,7 +30,7 @@
                     console.error("Error renaming plant:", error);
                 });
         }
-    </script>
+    </script> -->
 
     <app-plant-image [plant]="plant" />
 
@@ -54,29 +54,18 @@
         }
     </div>
 
-    <!-- action="{{ url_for('water_plant', plant_id=plant_id) }}" -->
-    <form method="post">
+    <div>
         <div class="datetime-picker">
-            <label for="watering_time">When did you water this plant?</label>
-
-            <!-- value="{{ now.isoformat() }}" -->
-            <input type="date" id="watering_time" name="watering_time" />
+            <label
+                >When did you water this plant?
+                <input type="date" [(ngModel)]="selectedDate" />
+            </label>
         </div>
-        <button type="submit" class="water-button">Log Watering</button>
-    </form>
-
-    <script>
-        function focusQrInfo() {
-            const qrElem = document.getElementsByClassName("qr-info")[0];
-            qrElem.requestFullscreen();
-        }
-    </script>
-    <div
-        class="qr-info"
-        allowfullscreen
-        allow="fullscreen"
-        onclick="focusQrInfo()"
-    >
+        <button class="water-button" (click)="waterPlant()">
+            Log Watering
+        </button>
+    </div>
+    <div class="qr-info">
         <h2>QR Code Information</h2>
         <p>Paste this into a QR code generator and stick it on it's pot</p>
         <p class="qr-url">{{ baseUrl }}{{ router.url }}</p>

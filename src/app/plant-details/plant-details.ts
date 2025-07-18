@@ -55,6 +55,6 @@ export class PlantDetails {
         if (this.plant == undefined) {
             return;
         }
-        this.plantService.waterPlant(this.plant.id, this.selectedDate);
+        this.plantService.waterPlant(this.plant, this.selectedDate);
     }
 }

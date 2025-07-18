@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import plantInfo from './models/plantInfo.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { from, map, switchMap } from 'rxjs';
 import { ApiDiscoveryService } from './api-discovery-service';
 
@@ -27,6 +27,9 @@ export class PlantsService {
                     map((plants) =>
                         plants.map((p) => {
                             p.imagePath = url + p.imagePath.slice(1);
+                            if (p.lastWatered != undefined) {
+                                p.lastWatered = new Date(p.lastWatered);
+                            }
                             return p;
                         })
                     )
@@ -59,16 +62,24 @@ export class PlantsService {
         );
     }
 
-    waterPlant(id: number, ISODate: string) {
+    waterPlant(plant: plantInfo, ISODate: string) {
         this.urlPromise.then(
             (url) => {
-                this.http.put(`${url}/plants/${id}/water`, { ISODate: ISODate }).subscribe();
+                this.http.put(`${url}/plants/${plant.id}/water`, { ISODate: ISODate }).subscribe(
+                    {
+                        next: (res) => {
+                            plant.lastWatered = new Date(ISODate);
+                        },
+                        error: (err) => {
+                            if (err.status == 404) { console.log("plant" + plant.id + " not found"); }
+                        }
+                    }
+                );
             }
         );
     }
 
     deletePlant(id: number) {
-
         this.urlPromise.then(
             (url) => {
                 this.http.delete(`${url}/plants/${id}`).subscribe();

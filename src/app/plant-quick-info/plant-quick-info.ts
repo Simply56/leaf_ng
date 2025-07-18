@@ -1,4 +1,4 @@
-import { Component, Input, WritableSignal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ValueToColorPipe } from '../value-to-color-pipe';
 import plantInfo from '../models/plantInfo.model';
 import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';

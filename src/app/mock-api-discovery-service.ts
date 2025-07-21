@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from './environments/environments';
 
 @Injectable({
     providedIn: 'root'
@@ -6,7 +7,10 @@ import { Injectable } from '@angular/core';
 export class MockApiDiscoveryService {
 
     async discoverBackend(): Promise<string | null> {
-        return '127.0.0.1'; // or 'localhost'
+        if (environment.useVps) {
+            return '152.67.64.149';
+        }
+        return 'localhost';
     }
 
 }

@@ -1,6 +1,6 @@
 @if (plant != null) {
 <div class="plant-status">
-    <h1 id="plant_title" contenteditable="true">{{ plant.name }}</h1>
+    <h1 #plantNameHeading id="plant_title" contenteditable="true" (keypress)="renamePlant($event)">{{ plant.name }}</h1>
     <!-- <script>
         // TODO: EXPORT TO COMPONENT METHOD
         const h1 = document.getElementById("plant_title");

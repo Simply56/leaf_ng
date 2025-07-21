@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
@@ -6,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class ApiDiscoveryService {
     private readonly expectedUUID: string = '73182a69-3fdf-4b5a-900a-e5369803afbb';
     private readonly port = 8080;
+    private http = inject(HttpClient);
 
 
     async discoverBackend(): Promise<string | null> {
@@ -20,7 +22,7 @@ export class ApiDiscoveryService {
             const controller = new AbortController();
             controllers.set(ip, controller);
 
-            fetch(`http://${ip}:${this.port}/ping`, {
+            fetch(`https://${ip}:${this.port}/ping`, {
                 signal: controller.signal,
                 mode: "cors"
             })

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import plantInfo from './models/plantInfo.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { from, map, switchMap } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
 import { ApiDiscoveryService } from './api-discovery-service';
 
 @Injectable({
@@ -14,13 +14,13 @@ export class PlantsService {
     urlPromise: Promise<string> = new Promise((resolve, reject) => {
         this.discovery.discoverBackend().then(ip => {
             if (ip != null) {
-                resolve(`http://${ip}:8080`);
+                resolve(`https://${ip}:8080`);
             };
             reject();
         });
     });
 
-    allPlants$ = from(this.urlPromise).pipe(
+    allPlants$: Observable<plantInfo[]> = from(this.urlPromise).pipe(
         switchMap((url) =>
             this.http.get<plantInfo[]>(`${url}/plants`)
                 .pipe(
@@ -51,13 +51,13 @@ export class PlantsService {
         );
     }
 
-    renamePlant(newName: string, id: number) {
+    renamePlant(newName: string, plant: plantInfo) {
 
         this.urlPromise.then(
             (url) => {
                 this.http
-                    .put(`${url}/plants/${id}`, { name: newName })
-                    .subscribe();
+                    .put(`${url}/plants/${plant.id}`, { name: newName })
+                    .subscribe(_ => plant.name = newName);
             }
         );
     }

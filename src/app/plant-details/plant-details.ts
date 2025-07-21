@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
 import plantInfo from '../models/plantInfo.model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PlantsService } from '../plants-service';
@@ -23,19 +23,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class PlantDetails {
     router: Router = inject(Router);
-    plantService: PlantsService = inject(PlantsService);
+    service: PlantsService = inject(PlantsService);
     route: ActivatedRoute = inject(ActivatedRoute);
-    plant: plantInfo | undefined;
+    plant?: plantInfo;
     baseUrl: string = window.location.origin;
     selectedDate: string;
+    @ViewChild("plantNameHeading") plantNameHeading!: ElementRef<HTMLHeadingElement>;
 
     constructor() {
         const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.plantService.getPlantById(id).subscribe((plant) => {
-            this.plant = plant;
-            if (this.plant == null) {
+        this.service.getPlantById(id).subscribe((plant) => {
+            if (plant == null) {
                 this.router.navigate(['']);
             }
+            this.plant = plant;
         });
         const today = new Date();
         this.selectedDate = today.toISOString().split('T')[0];
@@ -46,7 +47,7 @@ export class PlantDetails {
             this.plant != null &&
             confirm('Are you sure you want to delete this plant?')
         ) {
-            this.plantService.deletePlant(this.plant.id);
+            this.service.deletePlant(this.plant.id);
             this.router.navigate(['']);
         }
     }
@@ -55,6 +56,25 @@ export class PlantDetails {
         if (this.plant == undefined) {
             return;
         }
-        this.plantService.waterPlant(this.plant, this.selectedDate);
+        this.service.waterPlant(this.plant, this.selectedDate);
+    }
+
+    renamePlant(event: KeyboardEvent) {
+        if (event.key !== "Enter") {
+            return;
+        }
+        event.preventDefault();
+
+        if (this.plantNameHeading.nativeElement.textContent == null) {
+            console.log("plantNameHeading is null");
+            return;
+        }
+        if (this.plant == undefined) {
+            console.log("Plant is undefined");
+            return;
+        }
+
+        this.service.renamePlant(this.plantNameHeading.nativeElement.textContent, this.plant);
+        this.plantNameHeading.nativeElement.blur();
     }
 }

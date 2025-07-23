@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 })
 export class ApiDiscoveryService {
     private readonly expectedUUID: string = '73182a69-3fdf-4b5a-900a-e5369803afbb';
-    private readonly port = 8080;
+    private readonly port = 5000;
     private http = inject(HttpClient);
 
 

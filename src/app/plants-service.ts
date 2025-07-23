@@ -10,11 +10,12 @@ import { ApiDiscoveryService } from './api-discovery-service';
 export class PlantsService {
     private http = inject(HttpClient);
     private discovery: ApiDiscoveryService = inject(ApiDiscoveryService);
+    private port = 5000;
 
     urlPromise: Promise<string> = new Promise((resolve, reject) => {
         this.discovery.discoverBackend().then(ip => {
             if (ip != null) {
-                resolve(`https://${ip}:8080`);
+                resolve(`https://${ip}:${this.port}`);
             };
             reject();
         });

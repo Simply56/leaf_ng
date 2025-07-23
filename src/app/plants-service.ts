@@ -12,15 +12,18 @@ export class PlantsService {
     private discovery: ApiDiscoveryService = inject(ApiDiscoveryService);
     private port = 5000;
 
-    urlPromise: Promise<string> = new Promise((resolve, reject) => {
-        this.discovery.discoverBackend().then(ip => {
-            if (ip != null) {
-                resolve(`https://${ip}:${this.port}`);
-            };
-            reject();
-        });
-    });
+    // urlPromise: Promise<string> = new Promise((resolve, reject) => {
+    //     this.discovery.discoverBackend().then(ip => {
+    //         if (ip != null) {
+    //             resolve(`https://${ip}:${this.port}`);
+    //         };
+    //         reject();
+    //     });
+    // });
 
+    urlPromise: Promise<string> = new Promise((resolve, reject) => {
+        resolve("https://msrsen.duckdns.org")
+    });
     allPlants$: Observable<plantInfo[]> = from(this.urlPromise).pipe(
         switchMap((url) =>
             this.http.get<plantInfo[]>(`${url}/plants`)

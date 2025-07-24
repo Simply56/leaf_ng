@@ -12,6 +12,7 @@ export class PlantsService {
     private discovery: ApiDiscoveryService = inject(ApiDiscoveryService);
     private port = 5000;
 
+    // TODO: resolve this
     // urlPromise: Promise<string> = new Promise((resolve, reject) => {
     //     this.discovery.discoverBackend().then(ip => {
     //         if (ip != null) {

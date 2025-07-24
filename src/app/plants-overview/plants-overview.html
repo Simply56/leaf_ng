@@ -1,12 +1,15 @@
 <h1>L.E.A.F.</h1>
 <app-create-plant />
+@if (plants != undefined) {
 <div class="plants-list">
     @if (plants && plants.length > 0) {
-    <app-plant-quick-info
-        *ngFor="let plant of plants"
-        [plant]="plant"
-    />
+    <app-plant-quick-info *ngFor="let plant of plants" [plant]="plant" />
     } @else{
     <p>No plants added yet.</p>
     }
 </div>
+}@else {
+<div class="spinner-overlay">
+    <div class="spinner"></div>
+</div>
+}

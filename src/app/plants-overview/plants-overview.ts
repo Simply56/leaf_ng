@@ -14,7 +14,7 @@ import { filter, Subscription } from 'rxjs';
 })
 export class PlantsOverview implements OnInit {
     router: Router = inject(Router);
-    protected plants: plantInfo[] = [];
+    protected plants: plantInfo[] | undefined;
     private routerSubscription: Subscription | undefined;
     private plantsService: PlantsService = inject(PlantsService);
 
@@ -42,6 +42,7 @@ export class PlantsOverview implements OnInit {
                 this.refreshPlants();
             });
     }
+
     ngOnDestroy(): void {
         this.routerSubscription?.unsubscribe();
     }

@@ -23,7 +23,7 @@ export class PlantsService {
     // });
 
     urlPromise: Promise<string> = new Promise((resolve, reject) => {
-        resolve("https://msrsen.duckdns.org");
+        resolve("https://msrsen.mooo.com");
     });
     allPlants$: Observable<plantInfo[]> = from(this.urlPromise).pipe(
         switchMap((url) =>

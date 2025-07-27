@@ -23,7 +23,7 @@ export class PlantsService {
     // });
 
     urlPromise: Promise<string> = new Promise((resolve, reject) => {
-        resolve("https://msrsen.duckdns.org")
+        resolve("https://msrsen.duckdns.org");
     });
     allPlants$: Observable<plantInfo[]> = from(this.urlPromise).pipe(
         switchMap((url) =>
@@ -31,7 +31,7 @@ export class PlantsService {
                 .pipe(
                     map((plants) =>
                         plants.map((p) => {
-                            p.imagePath = url + p.imagePath.slice(1);
+                            p.imagePath = url + p.imagePath;
                             if (p.lastWatered != undefined) {
                                 p.lastWatered = new Date(p.lastWatered);
                             }
@@ -108,7 +108,7 @@ export class PlantsService {
             return this.http.put<IResponse>(`${url}/images/${plant.id}`, formData);
         }).then(resObs => {
             resObs.subscribe(res => {
-                plant.imagePath += res.newPath.slice(1); // remove leading '.'
+                plant.imagePath += res.newPath
                 console.log(plant.imagePath);
             });
 

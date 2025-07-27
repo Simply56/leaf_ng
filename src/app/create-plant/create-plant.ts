@@ -9,5 +9,4 @@ import { PlantsService } from '../plants-service';
 })
 export class CreatePlant {
     service: PlantsService = inject(PlantsService);
-
 }

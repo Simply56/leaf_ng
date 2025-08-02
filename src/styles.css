@@ -359,3 +359,12 @@ button:hover {
         print-color-adjust: exact;
     }
 }
+
+.add-plant {
+    background-color: red;
+    background: var(--card-background);
+    padding: var(--spacing-unit);
+    border-radius: 0.5rem;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

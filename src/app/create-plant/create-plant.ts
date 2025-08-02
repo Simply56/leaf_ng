@@ -5,7 +5,6 @@ import { PlantsService } from '../plants-service';
     selector: 'app-create-plant',
     imports: [],
     templateUrl: './create-plant.html',
-    styleUrl: './create-plant.css'
 })
 export class CreatePlant {
     service: PlantsService = inject(PlantsService);

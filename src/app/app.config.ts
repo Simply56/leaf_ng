@@ -10,6 +10,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ApiDiscoveryService } from './api-discovery-service';
 import { MockApiDiscoveryService } from './mock-api-discovery-service';
 import { environment } from './environments/environments';
+import { provideStore } from '@ngrx/store';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
         {
             provide: ApiDiscoveryService,
             useClass: environment.useMockServices ? MockApiDiscoveryService : ApiDiscoveryService
-        }
+        },
+        provideStore()
     ],
 };

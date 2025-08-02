@@ -41,6 +41,7 @@ export class PlantsService {
     }
 
     addPlant(name: string) {
+        if (name === "") return;
         this.http.post(`${this.url}/plants`, { name: name }).subscribe();
     }
 

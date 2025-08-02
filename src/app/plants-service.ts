@@ -67,22 +67,13 @@ export class PlantsService {
         this.http.delete(`${this.url}/plants/${id}`).subscribe();
     }
 
-    updatePlantImage(plant: plantInfo, image: File | undefined) {
-        interface IResponse {
-            message: string;
-            newPath: string;
-        }
-        if (image == undefined) {
-            console.log('image is undefined');
-            return;
-        }
+    updatePlantImage(plant: plantInfo, image: File) {
 
         const formData = new FormData();
         formData.append('image', image);
-        this.http.post<IResponse>(`${this.url}/plants/${plant.id}/image`, formData)
+        this.http.post<plantInfo>(`${this.url}/plants/${plant.id}/image`, formData)
             .subscribe(res => {
-                plant.imagePath = this.url + res.newPath;
-                console.log(plant.imagePath);
+                plant.imagePath = this.url + res.imagePath;
             });
 
     }

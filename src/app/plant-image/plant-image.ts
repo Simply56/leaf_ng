@@ -13,7 +13,12 @@ export class PlantImage {
     @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
 
     updateImage() {
-        this.service.updatePlantImage(this.plant, this.imageInput.nativeElement.files?.[0]);
+        let imageToUpload = this.imageInput.nativeElement.files?.[0];
+        if (imageToUpload == undefined) {
+            console.log("Image is undefined");
+            return;
+        }
+        this.service.updatePlantImage(this.plant, imageToUpload);
     }
 
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import plantInfo from './models/plantInfo.model';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { from, map, Observable, switchMap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { ApiDiscoveryService } from './api-discovery-service';
 
 @Injectable({
@@ -22,26 +22,18 @@ export class PlantsService {
     //     });
     // });
 
-    urlPromise: Promise<string> = new Promise((resolve, reject) => {
-        resolve("https://msrsen.mooo.com");
-    });
-    allPlants$: Observable<plantInfo[]> = from(this.urlPromise).pipe(
-        switchMap((url) =>
-            this.http.get<plantInfo[]>(`${url}/plants`)
-                .pipe(
-                    map((plants) =>
-                        plants.map((p) => {
-                            p.imagePath = url + p.imagePath;
-                            if (p.lastWatered != undefined) {
-                                p.lastWatered = new Date(p.lastWatered);
-                            }
-                            return p;
-                        })
-                    )
-                )
+    url: string = "http://127.0.0.1:3000";
+    allPlants$: Observable<plantInfo[]> = this.http.get<plantInfo[]>(`${this.url}/plants`).pipe(
+        map((plants) =>
+            plants.map((p) => {
+                p.imagePath = this.url + p.imagePath;
+                if (p.lastWatered != undefined) {
+                    p.lastWatered = new Date(p.lastWatered);
+                }
+                return p;
+            })
         )
     );
-
     getPlantById(id: number) {
         return this.allPlants$.pipe(
             map((plants) => plants.find((p) => p.id == id))
@@ -49,47 +41,30 @@ export class PlantsService {
     }
 
     addPlant(name: string) {
-        this.urlPromise.then(
-            (url) => {
-                this.http.post(`${url}/plants`, { name: name }).subscribe();
-            }
-        );
+        this.http.post(`${this.url}/plants`, { name: name }).subscribe();
     }
 
     renamePlant(newName: string, plant: plantInfo) {
-
-        this.urlPromise.then(
-            (url) => {
-                this.http
-                    .put(`${url}/plants/${plant.id}`, { name: newName })
-                    .subscribe(_ => plant.name = newName);
-            }
-        );
+        this.http
+            .put(`${this.url}/plants/${plant.id}`, { name: newName })
+            .subscribe(() => plant.name = newName);
     }
 
     waterPlant(plant: plantInfo, ISODate: string) {
-        this.urlPromise.then(
-            (url) => {
-                this.http.put(`${url}/plants/${plant.id}/water`, { ISODate: ISODate }).subscribe(
-                    {
-                        next: (res) => {
-                            plant.lastWatered = new Date(ISODate);
-                        },
-                        error: (err) => {
-                            if (err.status == 404) { console.log("plant" + plant.id + " not found"); }
-                        }
-                    }
-                );
+        this.http.patch(`${this.url}/plants/${plant.id}/water`, { wateredAt: ISODate }).subscribe(
+            {
+                next: (res) => {
+                    plant.lastWatered = new Date(ISODate);
+                },
+                error: (err) => {
+                    if (err.status == 404) { console.log("plant" + plant.id + " not found"); }
+                }
             }
         );
     }
 
     deletePlant(id: number) {
-        this.urlPromise.then(
-            (url) => {
-                this.http.delete(`${url}/plants/${id}`).subscribe();
-            }
-        );
+        this.http.delete(`${this.url}/plants/${id}`).subscribe();
     }
 
     updatePlantImage(plant: plantInfo, image: File | undefined) {
@@ -101,17 +76,14 @@ export class PlantsService {
             console.log('image is undefined');
             return;
         }
-        this.urlPromise.then((url) => {
-            plant.imagePath = url;
-            const formData = new FormData();
-            formData.append('image', image);
-            return this.http.put<IResponse>(`${url}/images/${plant.id}`, formData);
-        }).then(resObs => {
-            resObs.subscribe(res => {
-                plant.imagePath += res.newPath
+
+        const formData = new FormData();
+        formData.append('image', image);
+        this.http.post<IResponse>(`${this.url}/plants/${plant.id}/image`, formData)
+            .subscribe(res => {
+                plant.imagePath = this.url + res.newPath;
                 console.log(plant.imagePath);
             });
 
-        });
     }
 }

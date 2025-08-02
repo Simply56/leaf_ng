@@ -1,14 +1,15 @@
 <h1>L.E.A.F.</h1>
 <app-create-plant />
-@if (plants != undefined) {
+
+@let plants = service.allPlants$ | async; @if (plants) {
 <div class="plants-list">
-    @if (plants && plants.length > 0) {
-    <app-plant-quick-info *ngFor="let plant of plants" [plant]="plant" />
-    } @else{
+    @if (plants.length > 0) { @for (plant of plants; track $index) {
+    <app-plant-quick-info [plant]="plant" />
+    } } @else {
     <p>No plants added yet.</p>
     }
 </div>
-}@else {
+} @else {
 <div class="spinner-overlay">
     <div class="spinner"></div>
 </div>

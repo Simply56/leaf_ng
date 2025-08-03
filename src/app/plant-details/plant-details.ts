@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
-import plantInfo from '../models/plantInfo.model';
+import Plant from '../models/plantInfo.model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PlantsService } from '../plants-service';
 import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
@@ -25,7 +25,7 @@ export class PlantDetails {
     router: Router = inject(Router);
     service: PlantsService = inject(PlantsService);
     route: ActivatedRoute = inject(ActivatedRoute);
-    plant?: plantInfo;
+    plant?: Plant;
     baseUrl: string = window.location.origin;
     selectedDate: string;
     @ViewChild("plantNameHeading") plantNameHeading!: ElementRef<HTMLHeadingElement>;

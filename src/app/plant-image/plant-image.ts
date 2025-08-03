@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, Input, ViewChild, } from '@angular/core';
-import plantInfo from '../models/plantInfo.model';
+import Plant from '../models/plantInfo.model';
 import { PlantsService } from '../plants-service';
 
 @Component({
@@ -9,7 +9,7 @@ import { PlantsService } from '../plants-service';
 })
 export class PlantImage {
     service: PlantsService = inject(PlantsService);
-    @Input() plant!: plantInfo;
+    @Input() plant!: Plant;
     @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
 
     updateImage() {

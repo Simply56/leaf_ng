@@ -1,4 +1,4 @@
-export default interface plantInfo {
+export default interface Plant {
     id: number;
     imagePath: string;
     lastWatered: Date | undefined;

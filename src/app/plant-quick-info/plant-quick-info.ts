@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ValueToColorPipe } from '../value-to-color-pipe';
-import plantInfo from '../models/plantInfo.model';
+import Plant from '../models/plantInfo.model';
 import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
 import { RouterLink } from '@angular/router';
 import { PlantImage } from '../plant-image/plant-image';
@@ -17,5 +17,5 @@ import { PlantImage } from '../plant-image/plant-image';
     styleUrl: './plant-quick-info.css'
 })
 export class PlantQuickInfo {
-    @Input() plant!: plantInfo;
+    @Input() plant!: Plant;
 }

@@ -2,27 +2,16 @@ import { inject, Injectable } from '@angular/core';
 import Plant from './models/plantInfo.model';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { ApiDiscoveryService } from './api-discovery-service';
+import { environment } from './environments/environments';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PlantsService {
     private http = inject(HttpClient);
-    private discovery: ApiDiscoveryService = inject(ApiDiscoveryService);
-    private port = 5000;
 
-    // TODO: resolve this
-    // urlPromise: Promise<string> = new Promise((resolve, reject) => {
-    //     this.discovery.discoverBackend().then(ip => {
-    //         if (ip != null) {
-    //             resolve(`https://${ip}:${this.port}`);
-    //         };
-    //         reject();
-    //     });
-    // });
 
-    url: string = "http://127.0.0.1:3000";
+    url: string = environment.useVps ? "https://msrsen.mooo.com" : "http://127.0.0.1:3000";
     allPlants$: Observable<Plant[]> = this.http.get<Plant[]>(`${this.url}/plants`).pipe(
         map((plants) =>
             plants.map((p) => {

@@ -1,12 +1,12 @@
 import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
-import Plant from '../models/plantInfo.model';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { PlantsService } from '../plants-service';
-import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
-import { ValueToColorPipe } from '../value-to-color-pipe';
 import { DatePipe } from '@angular/common';
 import { PlantImage } from "../plant-image/plant-image";
 import { FormsModule } from '@angular/forms';
+import { ComputeWateredDaysAgoPipe } from '../../pipes/compute-watered-days-ago-pipe';
+import { ValueToColorPipe } from '../../pipes/value-to-color-pipe';
+import Plant from '../../models/plantInfo.model';
+import { PlantsService } from '../../services/plants-service';
 
 @Component({
     selector: 'app-plant-details',

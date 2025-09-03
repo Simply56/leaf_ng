@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { PlantsService } from '../plants-service';
+import { PlantsService } from '../../services/plants-service';
 
 @Component({
     selector: 'app-create-plant',

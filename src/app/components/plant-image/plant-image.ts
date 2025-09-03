@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, Input, ViewChild, } from '@angular/core';
-import Plant from '../models/plantInfo.model';
-import { PlantsService } from '../plants-service';
+import { PlantsService } from '../../services/plants-service';
+import Plant from '../../models/plantInfo.model';
 
 @Component({
     selector: 'app-plant-image',

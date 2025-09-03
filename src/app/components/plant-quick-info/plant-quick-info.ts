@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ValueToColorPipe } from '../value-to-color-pipe';
-import Plant from '../models/plantInfo.model';
-import { ComputeWateredDaysAgoPipe } from '../compute-watered-days-ago-pipe';
+import { ValueToColorPipe } from '../../pipes/value-to-color-pipe';
+import Plant from '../../models/plantInfo.model';
+import { ComputeWateredDaysAgoPipe } from '../../pipes/compute-watered-days-ago-pipe';
 import { RouterLink } from '@angular/router';
 import { PlantImage } from '../plant-image/plant-image';
 

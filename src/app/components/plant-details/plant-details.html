@@ -1,6 +1,7 @@
-@if (plant != null) {
+@let p = plant();
+@if (p != null) {
 <div class="plant-status">
-    <h1 #plantNameHeading id="plant_title" contenteditable="true" (keypress)="renamePlant($event)">{{ plant.name }}</h1>
+    <h1 #plantNameHeading id="plant_title" contenteditable="true" (keypress)="renamePlant($event)">{{ p.name }}</h1>
     <!-- <script>
         // TODO: EXPORT TO COMPONENT METHOD
         const h1 = document.getElementById("plant_title");
@@ -32,23 +33,22 @@
         }
     </script> -->
 
-    <app-plant-image [plant]="plant" />
+    <app-plant-image [plant]="p" />
 
     <div class="watering-info">
-        @if (plant.lastWatered == null) {
+        @if (p.lastWatered == null) {
         <p>This plant has never been watered.</p>
         } @else {
-
-        <p>Last watered: {{ plant.lastWatered | date : "fullDate" }}</p>
+        <p>Last watered: {{ p.lastWatered | date : "fullDate" }}</p>
 
         <p>
             Days since last watering:
             <span
                 [style.color]="
-                    plant.lastWatered | computeWateredDaysAgo | valueToColor
+                    p.lastWatered | computeWateredDaysAgo | valueToColor
                 "
             >
-                {{ plant.lastWatered | computeWateredDaysAgo }}
+                {{ p.lastWatered | computeWateredDaysAgo }}
             </span>
         </p>
         }
@@ -74,7 +74,7 @@
     <div class="button-container">
         <button routerLink="">Back to Plants</button>
         <button class="button delete-button" (click)="deletePlant()">
-            Delete {{ plant.name }}
+            Delete {{ p.name }}
         </button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, Signal, ViewChild, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PlantImage } from "../plant-image/plant-image";
@@ -25,29 +25,27 @@ export class PlantDetails {
     router: Router = inject(Router);
     service: PlantsService = inject(PlantsService);
     route: ActivatedRoute = inject(ActivatedRoute);
-    plant?: Plant;
+    id = Number(this.route.snapshot.paramMap.get('id'));
+    // TODO: FIX THIS AS IT CAN BE UNDEFINED FOR A MOMENT
+    plant: Signal<Plant> = computed(() => this.service.plants().find(p => p.id == this.id)!);
     baseUrl: string = window.location.origin;
     selectedDate: string;
     @ViewChild("plantNameHeading") plantNameHeading!: ElementRef<HTMLHeadingElement>;
 
     constructor() {
-        const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.service.getPlantById(id).subscribe((plant) => {
-            if (plant == null) {
-                this.router.navigate(['']);
-            }
-            this.plant = plant;
-        });
+        if (this.plant() == undefined) {
+            this.router.navigate(['']);
+        }
         const today = new Date();
         this.selectedDate = today.toISOString().split('T')[0];
     }
 
     deletePlant() {
         if (
-            this.plant != null &&
+            this.plant() != null &&
             confirm('Are you sure you want to delete this plant?')
         ) {
-            this.service.deletePlant(this.plant.id);
+            this.service.deletePlant(this.id);
             this.router.navigate(['']);
         }
     }
@@ -56,7 +54,7 @@ export class PlantDetails {
         if (this.plant == undefined) {
             return;
         }
-        this.service.waterPlant(this.plant, this.selectedDate);
+        this.service.waterPlant(this.id, this.selectedDate);
     }
 
     renamePlant(event: KeyboardEvent) {
@@ -74,7 +72,7 @@ export class PlantDetails {
             return;
         }
 
-        this.service.renamePlant(this.plantNameHeading.nativeElement.textContent, this.plant);
+        this.service.renamePlant(this.plantNameHeading.nativeElement.textContent, this.id);
         this.plantNameHeading.nativeElement.blur();
     }
 }

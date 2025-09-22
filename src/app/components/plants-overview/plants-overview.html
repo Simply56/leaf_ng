@@ -1,9 +1,11 @@
 <h1>L.E.A.F.</h1>
 <app-create-plant />
 
-@let plants = service.allPlants$ | async; @if (plants) {
+@let plants = service.plants();
+@if (plants) {
 <div class="plants-list">
-    @if (plants.length > 0) { @for (plant of plants; track $index) {
+    @if (plants.length > 0) { @for (plant of plants; track
+    $index) {
     <app-plant-quick-info [plant]="plant" />
     } } @else {
     <p>No plants added yet.</p>

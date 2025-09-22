@@ -18,7 +18,7 @@ export class PlantImage {
             console.log("Image is undefined");
             return;
         }
-        this.service.updatePlantImage(this.plant, imageToUpload);
+        this.service.updatePlantImage(this.plant.id, imageToUpload);
     }
 
 }

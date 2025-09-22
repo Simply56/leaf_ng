@@ -1,3 +1,3 @@
 export const environment = {
-    useVps: true
+    useVps: true,
 };

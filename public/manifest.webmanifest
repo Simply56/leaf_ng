@@ -1,6 +1,6 @@
 {
-    "name": "leaf_ng",
-    "short_name": "leaf_ng",
+    "name": "Leaf",
+    "short_name": "Leaf",
     "display": "standalone",
     "scope": "./",
     "start_url": "./",

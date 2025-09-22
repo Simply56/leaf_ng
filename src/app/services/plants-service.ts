@@ -11,12 +11,14 @@ export class PlantsService {
     private http = inject(HttpClient);
 
     private readonly url: string = environment.useVps ? "https://msrsen.mooo.com" : "http://127.0.0.1:3000";
+    loading = signal(true);
     plants: WritableSignal<Plant[]> = signal([]);
+
     constructor() {
         this.refresh();
     }
     refresh(): void {
-        console.log("refreshing");
+        this.loading.set(true);
         this.http.get<Plant[]>(`${this.url}/plants`).pipe(
             map((plants) =>
                 plants.map((p) => {
@@ -28,6 +30,7 @@ export class PlantsService {
                 })
             )).subscribe(plants => {
                 console.log(plants);
+                this.loading.set(false);
                 this.plants.set(plants);
             });
 

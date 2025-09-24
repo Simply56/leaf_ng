@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, Signal, ViewChild, viewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, Signal, ViewChild, viewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PlantImage } from "../plant-image/plant-image";
@@ -31,9 +31,11 @@ export class PlantDetails {
     selectedDate: string;
     @ViewChild("plantNameHeading") plantNameHeading!: ElementRef<HTMLHeadingElement>;
     constructor() {
-        if (this.plant() == undefined) {
-            this.router.navigate(['']);
-        }
+        effect(() => {
+            if (!this.service.loading() && this.plant() == undefined) {
+                this.router.navigate(['']);
+            }
+        });
         const today = new Date();
         this.selectedDate = today.toISOString().split('T')[0];
     }

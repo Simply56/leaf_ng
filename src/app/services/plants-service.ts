@@ -1,7 +1,7 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import Plant from '../models/plantInfo.model';
 import { HttpClient } from '@angular/common/http';
-import { map, single } from 'rxjs';
+import { map, retry } from 'rxjs';
 import { environment } from '../environments/environments';
 
 @Injectable({
@@ -28,13 +28,24 @@ export class PlantsService {
                     }
                     return p;
                 })
-            )).subscribe(plants => {
+            ),
+            retry({
+                delay: 1000,
+            })
+        ).subscribe({
+            next: (plants) => {
                 console.log(plants);
-                this.loading.set(false);
                 this.plants.set(plants);
-            });
-
+                this.loading.set(false);
+            },
+            error: (err) => {
+                console.error('Failed to fetch plants:', err);
+                this.loading.set(false);
+            }
+        });
     }
+
+
 
     addPlant(name: string) {
         if (name === "") return;

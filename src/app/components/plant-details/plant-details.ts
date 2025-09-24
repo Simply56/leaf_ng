@@ -22,16 +22,14 @@ import { PlantsService } from '../../services/plants-service';
     templateUrl: './plant-details.html',
 })
 export class PlantDetails {
+    fullUrl = window.location.href;
     router: Router = inject(Router);
     service: PlantsService = inject(PlantsService);
     route: ActivatedRoute = inject(ActivatedRoute);
     id = Number(this.route.snapshot.paramMap.get('id'));
-    // TODO: FIX THIS AS IT CAN BE UNDEFINED FOR A MOMENT
     plant: Signal<Plant> = computed(() => this.service.plants().find(p => p.id == this.id)!);
-    baseUrl: string = window.location.origin;
     selectedDate: string;
     @ViewChild("plantNameHeading") plantNameHeading!: ElementRef<HTMLHeadingElement>;
-
     constructor() {
         if (this.plant() == undefined) {
             this.router.navigate(['']);

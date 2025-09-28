@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environments';
 
 @Injectable({
     providedIn: 'root',
@@ -26,6 +25,8 @@ export class AuthService {
             this.apiKey = key;
             return this.apiKey;
         }
-        return null;
+        const result = prompt("Please enter the key");
+        this.apiKey = result;
+        return this.apiKey;
     }
 }

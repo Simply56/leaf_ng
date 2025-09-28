@@ -1,32 +1,36 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import Plant from '../models/plantInfo.model';
 import { HttpClient } from '@angular/common/http';
-import { map, retry, tap, catchError, timer } from 'rxjs';
+import { defer, map, retry, timer } from 'rxjs';
 import { environment } from '../environments/environments';
+import { AuthService } from './auth-service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PlantsService {
-    private http = inject(HttpClient);
-
-    private readonly url: string = environment.useVps ? "https://msrsen.mooo.com" : "http://127.0.0.1:3000";
     loading = signal(true);
     plants: WritableSignal<Plant[]> = signal([]);
 
     private buildUrl(endpoint: string): string {
-        return `${this.url}${endpoint}?apiKey=${environment.apiKey}`;
+        return `${environment.url}${endpoint}?apiKey=${environment.apiKey}`;
     }
 
-    constructor() {
+    constructor(
+        private http: HttpClient,
+        private auth: AuthService
+    ) {
+        auth.getApiKey();
         this.refresh();
     }
+
     refresh(): void {
         this.loading.set(true);
-        this.http.get<Plant[]>(this.buildUrl('/plants')).pipe(
+
+        defer(() => this.http.get<Plant[]>(this.buildUrl('/plants'))).pipe(
             map((plants) =>
                 plants.map((p) => {
-                    p.imagePath = this.url + p.imagePath;
+                    p.imagePath = environment.url + p.imagePath;
                     if (p.lastWatered != undefined) {
                         p.lastWatered = new Date(p.lastWatered);
                     }
@@ -36,12 +40,11 @@ export class PlantsService {
             retry({
                 delay: (error, retryCount) => {
                     console.error(`Retry attempt ${retryCount} failed:`, error);
-                    return timer(1000);
+                    return timer(1000); // wait 1s before retry
                 },
             })
         ).subscribe({
             next: (plants) => {
-                console.log(plants);
                 this.plants.set(plants);
                 this.loading.set(false);
             },
@@ -51,6 +54,7 @@ export class PlantsService {
             }
         });
     }
+
 
 
 

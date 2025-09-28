@@ -8,7 +8,6 @@ export class AuthService {
     private readonly localSecretHostIp = 'http://192.168.0.195:8080/';
     private readonly storageKey = 'apiKey';
     constructor() {
-        this.getApiKey().then(key => environment.apiKey = key);
     }
     async getApiKey(): Promise<string | null> {
         const storedKey = localStorage.getItem(this.storageKey);

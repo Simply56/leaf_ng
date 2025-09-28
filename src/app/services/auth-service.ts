@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { errorContext } from 'rxjs/internal/util/errorContext';
 
 @Injectable({
     providedIn: 'root',
@@ -18,12 +19,16 @@ export class AuthService {
             this.apiKey = storedKey;
             return this.apiKey;
         }
-        const response = await fetch(this.localSecretHostIp);
-        if (response.ok) {
-            const key = await response.text();
-            localStorage.setItem(this.storageKey, key);
-            this.apiKey = key;
-            return this.apiKey;
+        try {
+            const response = await fetch(this.localSecretHostIp);
+            if (response.ok) {
+                const key = await response.text();
+                localStorage.setItem(this.storageKey, key);
+                this.apiKey = key;
+                return this.apiKey;
+            }
+        } catch (err: unknown) {
+            console.log(err);
         }
         const result = prompt("Please enter the key");
         this.apiKey = result;

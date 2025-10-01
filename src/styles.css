@@ -42,7 +42,6 @@ h2 {
     font-size: clamp(1.2rem, 3vw, 2rem);
 }
 
-
 input[type="text"] {
     padding: calc(var(--spacing-unit) * 0.75);
     border: 1px solid #ddd;
@@ -354,4 +353,3 @@ button:hover {
         print-color-adjust: exact;
     }
 }
-

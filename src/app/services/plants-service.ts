@@ -20,15 +20,12 @@ export class PlantsService {
         this.refresh();
     }
 
-    refresh(): void {
+    async refresh(): Promise<void> {
         this.loading.set(true);
-        this.auth.getApiKey().then(key => {
-            console.log(key);
-            if (key == null) {
-                return;
-            }
+        const key = await this.auth.getApiKey();
+        if (key) {
             environment.apiKey = key;
-        });
+        }
 
         defer(() => this.http.get<Plant[]>(this.buildUrl('/plants')))
             .pipe(

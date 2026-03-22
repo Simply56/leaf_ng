@@ -3,10 +3,14 @@
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "nx serve",
-        "build": "nx build",
-        "watch": "nx build --watch --configuration development",
-        "deploy": "nx deploy --base-href=/leaf_ng/"
+        "start": "ng serve",
+        "build": "ng build",
+        "watch": "ng build --watch --configuration development",
+        "deploy": "ng deploy --base-href=/leaf_ng/",
+        "lint": "eslint src",
+        "lint:fix": "eslint src --fix",
+        "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
+        "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\""
     },
     "prettier": {
         "overrides": [
@@ -44,6 +48,8 @@
         "@schematics/angular": "^20.3.2",
         "angular-cli-ghpages": "^2.0.3",
         "nx": "22.2.0",
-        "typescript": "~5.8.2"
+        "prettier": "^3.8.1",
+        "typescript": "~5.8.2",
+        "typescript-eslint": "^8.57.1"
     }
 }

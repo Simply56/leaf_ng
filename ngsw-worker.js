@@ -606,7 +606,7 @@ ${error.stack}`;
      * Create a new `Request` based on the specified URL and `RequestInit` options, preserving only
      * metadata that are known to be safe.
      *
-     * Currently, only headers are preserved.
+     * Currently, only headers and redirect policy are preserved.
      *
      * NOTE:
      *   Things like credential inclusion are intentionally omitted to avoid issues with opaque
@@ -617,7 +617,10 @@ ${error.stack}`;
      *   https://github.com/angular/angular/issues/41931#issuecomment-1227601347
      */
     newRequestWithMetadata(url, options) {
-      return this.adapter.newRequest(url, { headers: options.headers });
+      return this.adapter.newRequest(url, {
+        headers: options.headers,
+        redirect: options.redirect
+      });
     }
     /**
      * Construct a cache-busting URL for a given URL.
@@ -1285,7 +1288,7 @@ ${error.stack}`;
   };
 
   // packages/service-worker/worker/src/debug.js
-  var SW_VERSION = "20.3.1";
+  var SW_VERSION = "21.2.5";
   var DEBUG_LOG_BUFFER_SIZE = 100;
   var DebugHandler = class {
     constructor(driver, adapter2) {
@@ -2005,7 +2008,6 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ "Content-Type": "text/plain" }
         return;
       }
       const brokenHash = broken[0];
-      await this.notifyClientsAboutVersionFailure(brokenHash, err);
       if (this.latestHash === brokenHash) {
         this.state = DriverReadyState.EXISTING_CLIENTS_ONLY;
         this.stateMessage = `Degraded due to: ${errorToString(err)}`;
@@ -2195,21 +2197,6 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ "Content-Type": "text/plain" }
           latestVersion: this.mergeHashWithAppData(manifest, hash)
         };
         client.postMessage(notice);
-      }));
-    }
-    async notifyClientsAboutVersionFailure(brokenHash, error) {
-      await this.initialized;
-      const affectedClients = Array.from(this.clientVersionMap.entries()).filter(([clientId, hash]) => hash === brokenHash).map(([clientId]) => clientId);
-      await Promise.all(affectedClients.map(async (clientId) => {
-        const client = await this.scope.clients.get(clientId);
-        if (client) {
-          const brokenVersion = this.versions.get(brokenHash);
-          client.postMessage({
-            type: "VERSION_FAILED",
-            version: this.mergeHashWithAppData(brokenVersion.manifest, brokenHash),
-            error: errorToString(error)
-          });
-        }
       }));
     }
     async broadcast(msg) {

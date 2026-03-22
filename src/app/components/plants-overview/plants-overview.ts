@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CreatePlant } from '../create-plant/create-plant';
 import { PlantQuickInfo } from '../plant-quick-info/plant-quick-info';
-import { CommonModule } from '@angular/common';
+
 import { PlantsService } from '../../services/plants-service';
 
 @Component({
     selector: 'app-plants-overview',
-    imports: [CreatePlant, CommonModule, PlantQuickInfo],
+    imports: [CreatePlant, PlantQuickInfo],
     templateUrl: './plants-overview.html',
 })
 export class PlantsOverview {

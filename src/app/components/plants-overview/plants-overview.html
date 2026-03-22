@@ -3,14 +3,16 @@
 
 @let plants = service.plants();
 <div class="plants-list">
-    @if (plants.length > 0) { @for (plant of plants; track $index) {
-    <app-plant-quick-info [plant]="plant" />
-    } } @else {
-    <p>No plants added yet.</p>
+    @if (plants.length > 0) {
+        @for (plant of plants; track $index) {
+            <app-plant-quick-info [plant]="plant" />
+        }
+    } @else {
+        <p>No plants added yet.</p>
     }
 </div>
-@if (service.loading() ) {
-<div class="spinner-overlay">
-    <div class="spinner"></div>
-</div>
+@if (service.loading()) {
+    <div class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
 }

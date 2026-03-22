@@ -16,7 +16,10 @@ export class PlantsService {
         return `${environment.url}${endpoint}?apiKey=${environment.apiKey}`;
     }
 
-    constructor(private http: HttpClient, private auth: AuthService) {
+    constructor(
+        private http: HttpClient,
+        private auth: AuthService,
+    ) {
         this.refresh();
     }
 
@@ -36,17 +39,17 @@ export class PlantsService {
                             p.lastWatered = new Date(p.lastWatered);
                         }
                         return p;
-                    })
+                    }),
                 ),
                 retry({
                     delay: (error, retryCount) => {
                         console.error(
                             `Retry attempt ${retryCount} failed:`,
-                            error
+                            error,
                         );
                         return timer(1000); // wait 1s before retry
                     },
-                })
+                }),
             )
             .subscribe({
                 next: (plants) => {

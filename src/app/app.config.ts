@@ -1,7 +1,8 @@
 import {
     ApplicationConfig,
     provideBrowserGlobalErrorListeners,
-    provideZoneChangeDetection, isDevMode,
+    provideZoneChangeDetection,
+    isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -16,9 +17,10 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
         provideHttpClient(withFetch()),
-        provideStore(), provideServiceWorker('ngsw-worker.js', {
+        provideStore(),
+        provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          })
+            registrationStrategy: 'registerWhenStable:30000',
+        }),
     ],
 };

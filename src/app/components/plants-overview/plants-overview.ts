@@ -6,7 +6,7 @@ import { PlantsService } from '../../services/plants-service';
 
 @Component({
     selector: 'app-plants-overview',
-    imports: [CreatePlant, CommonModule, PlantQuickInfo,],
+    imports: [CreatePlant, CommonModule, PlantQuickInfo],
     templateUrl: './plants-overview.html',
 })
 export class PlantsOverview {

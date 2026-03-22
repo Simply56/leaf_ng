@@ -11,10 +11,10 @@ import { PlantImage } from '../plant-image/plant-image';
         ValueToColorPipe,
         ComputeWateredDaysAgoPipe,
         RouterLink,
-        PlantImage
+        PlantImage,
     ],
     templateUrl: './plant-quick-info.html',
-    styleUrl: './plant-quick-info.css'
+    styleUrl: './plant-quick-info.css',
 })
 export class PlantQuickInfo {
     @Input() plant!: Plant;

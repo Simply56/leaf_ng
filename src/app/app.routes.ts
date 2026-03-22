@@ -5,10 +5,10 @@ import { PlantDetails } from './components/plant-details/plant-details';
 export const routes: Routes = [
     {
         path: '',
-        component: PlantsOverview
+        component: PlantsOverview,
     },
     {
         path: 'plant/:id',
         component: PlantDetails,
-    }
+    },
 ];

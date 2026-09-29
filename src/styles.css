@@ -1,11 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
+    color-scheme: light;
     --primary-color: #4caf50;
+    --primary-hover: #45a049;
     --background-color: #f5f5f5;
     --text-color: #333;
     --card-background: #fff;
+    --border-color: #ddd;
+    --input-background: #fff;
+    --muted-background: var(--muted-background);
+    --shadow: rgba(0, 0, 0, 0.1);
+    --overlay-background: rgba(255, 255, 255, 0.7);
+    --status-lightness: 40%;
     --spacing-unit: clamp(0.5rem, 2vw, 1rem);
     --container-width: min(90%, 800px);
+}
+
+/* Dark theme: follows the OS unless the user picked light, or forced via the toggle */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --background-color: #121212;
+        --text-color: #e0e0e0;
+        --card-background: #1e1e1e;
+        --border-color: #444;
+        --input-background: #2a2a2a;
+        --muted-background: #2a2a2a;
+        --shadow: rgba(0, 0, 0, 0.5);
+        --overlay-background: rgba(0, 0, 0, 0.6);
+        --status-lightness: 60%;
+    }
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --card-background: #1e1e1e;
+    --border-color: #444;
+    --input-background: #2a2a2a;
+    --muted-background: #2a2a2a;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --overlay-background: rgba(0, 0, 0, 0.6);
+    --status-lightness: 60%;
 }
 
 * {
@@ -45,9 +82,11 @@ h2 {
 
 input[type="text"] {
     padding: calc(var(--spacing-unit) * 0.75);
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 0.25rem;
     font-size: 1em;
+    background-color: var(--input-background);
+    color: var(--text-color);
 }
 
 button {
@@ -62,7 +101,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--primary-hover);
 }
 
 .plants-list {
@@ -75,7 +114,7 @@ button:hover {
     background: var(--card-background);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,7 +143,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--primary-hover);
 }
 
 .button-container {
@@ -128,7 +167,7 @@ button:hover {
     background: var(--card-background);
     padding: var(--spacing-unit);
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 .datetime-picker label {
@@ -141,11 +180,11 @@ button:hover {
 .datetime-picker input[type="date"] {
     width: 100%;
     padding: calc(var(--spacing-unit) * 0.75);
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 0.25rem;
     font-size: 1em;
     margin-bottom: var(--spacing-unit);
-    background-color: white;
+    background-color: var(--input-background);
     color: var(--text-color);
     cursor: pointer;
     transition:
@@ -168,7 +207,7 @@ button:hover {
 }
 
 .datetime-picker input[type="date"]::-webkit-calendar-picker-indicator:hover {
-    background-color: #45a049;
+    background-color: var(--primary-hover);
 }
 
 .qr-info {
@@ -176,12 +215,12 @@ button:hover {
     padding: 20px;
     border-radius: 8px;
     margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 .qr-url {
     word-break: break-all;
-    background: #f8f8f8;
+    background: var(--muted-background);
     padding: 10px;
     border-radius: 4px;
     font-family: monospace;
@@ -200,7 +239,7 @@ button:hover {
     border-radius: 0.5rem;
     margin: calc(var(--spacing-unit) * 1.5) auto;
     display: block;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 .watering-info {
@@ -208,7 +247,7 @@ button:hover {
     padding: 20px;
     border-radius: 8px;
     margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 .delete-button {
@@ -279,7 +318,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.7); /* optional dim background */
+    background: var(--overlay-background); /* optional dim background */
     z-index: 9999;
 }
 
@@ -304,6 +343,7 @@ button:hover {
 @media print {
     body {
         background: white;
+        color: #333;
         margin: 0;
         padding: 0;
     }

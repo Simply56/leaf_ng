@@ -1,0 +1,24 @@
+.theme-toggle {
+    position: fixed;
+    top: var(--spacing-unit);
+    right: var(--spacing-unit);
+    z-index: 10;
+    margin: 0;
+    padding: 0.4rem 0.6rem;
+    line-height: 1;
+    font-size: 1.25rem;
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px var(--shadow);
+}
+
+.theme-toggle:hover {
+    background-color: var(--muted-background);
+}
+
+@media print {
+    .theme-toggle {
+        display: none;
+    }
+}

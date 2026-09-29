@@ -9,36 +9,6 @@
         >
             {{ p.name }}
         </h1>
-        <!-- <script>
-        // TODO: EXPORT TO COMPONENT METHOD
-        const h1 = document.getElementById("plant_title");
-
-        h1.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                renamePlant(h1.textContent);
-            }
-        });
-
-        function renamePlant(newName) {
-            const plantId = window.location.pathname.split("/").pop();
-            const formData = new FormData();
-            formData.append("new_name", newName);
-
-            fetch(`/rename/${plantId}`, {
-                method: "POST",
-                body: formData,
-            })
-                .then((response) => {
-                    if (response.redirected) {
-                        window.location.href = response.url; // Follow the redirect manually
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error renaming plant:", error);
-                });
-        }
-    </script> -->
 
         <app-plant-image [plant]="p" />
 

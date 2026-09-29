@@ -1,16 +1,22 @@
+/* Sits in the page's top-right corner and scrolls away with the content;
+   colors, radius and hover come from the global button styles */
 .theme-toggle {
-    position: fixed;
+    position: absolute;
     top: var(--spacing-unit);
     right: var(--spacing-unit);
-    z-index: 10;
     margin: 0;
-    padding: 0.4rem 0.6rem;
-    line-height: 1;
-    font-size: 1.25rem;
-    background-color: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    box-shadow: 0 2px 4px var(--shadow);
+    padding: calc(var(--spacing-unit) * 0.5);
+    line-height: 0;
+}
+
+.theme-toggle svg {
+    width: 1.25em;
+    height: 1.25em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .error-banner {
@@ -18,7 +24,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-unit);
-    max-width: var(--container-width);
+    max-width: min(var(--container-width), calc(100% - 7rem));
     margin: var(--spacing-unit) auto;
     padding: calc(var(--spacing-unit) * 0.75) var(--spacing-unit);
     background-color: #dc3545;
@@ -36,10 +42,6 @@
 
 .error-dismiss:hover {
     background-color: rgba(0, 0, 0, 0.15);
-}
-
-.theme-toggle:hover {
-    background-color: var(--muted-background);
 }
 
 @media print {

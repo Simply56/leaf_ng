@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PlantsService } from './services/plants-service';
 import { ThemeService } from './services/theme-service';
 
 @Component({
@@ -11,4 +12,5 @@ import { ThemeService } from './services/theme-service';
 export class App {
     protected title = 'Leaf';
     protected theme = inject(ThemeService);
+    protected plants = inject(PlantsService);
 }

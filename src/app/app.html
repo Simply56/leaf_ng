@@ -8,4 +8,16 @@
 >
     {{ theme.isDark() ? "☀️" : "🌙" }}
 </button>
+@if (plants.error(); as message) {
+    <div class="error-banner" role="alert">
+        <span>{{ message }}</span>
+        <button
+            class="error-dismiss"
+            (click)="plants.error.set(null)"
+            aria-label="Dismiss error"
+        >
+            ✕
+        </button>
+    </div>
+}
 <router-outlet />

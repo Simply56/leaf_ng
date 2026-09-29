@@ -13,11 +13,37 @@
     box-shadow: 0 2px 4px var(--shadow);
 }
 
+.error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-unit);
+    max-width: var(--container-width);
+    margin: var(--spacing-unit) auto;
+    padding: calc(var(--spacing-unit) * 0.75) var(--spacing-unit);
+    background-color: #dc3545;
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px var(--shadow);
+}
+
+.error-dismiss {
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    line-height: 1;
+}
+
+.error-dismiss:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .theme-toggle:hover {
     background-color: var(--muted-background);
 }
 
 @media print {
+    .error-banner,
     .theme-toggle {
         display: none;
     }

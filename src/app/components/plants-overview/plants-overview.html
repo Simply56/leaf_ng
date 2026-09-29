@@ -4,7 +4,7 @@
 @let plants = service.plants();
 <div class="plants-list">
     @if (plants.length > 0) {
-        @for (plant of plants; track $index) {
+        @for (plant of plants; track plant.id) {
             <app-plant-quick-info [plant]="plant" />
         }
     } @else {

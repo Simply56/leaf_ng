@@ -1,7 +1,7 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import Plant from '../models/plantInfo.model';
 import { HttpClient } from '@angular/common/http';
-import { defer, map, retry, timer } from 'rxjs';
+import { defer, map, Observable, retry, timer } from 'rxjs';
 import { environment } from '../environments/environments';
 import { AuthService } from './auth-service';
 
@@ -11,6 +11,7 @@ import { AuthService } from './auth-service';
 export class PlantsService {
     loading = signal(true);
     plants: WritableSignal<Plant[]> = signal([]);
+    error = signal<string | null>(null);
 
     private buildUrl(endpoint: string): string {
         return `${environment.url}${endpoint}?apiKey=${environment.apiKey}`;
@@ -42,6 +43,7 @@ export class PlantsService {
                     }),
                 ),
                 retry({
+                    count: 5,
                     delay: (error, retryCount) => {
                         console.error(
                             `Retry attempt ${retryCount} failed:`,
@@ -55,46 +57,70 @@ export class PlantsService {
                 next: (plants) => {
                     this.plants.set(plants);
                     this.loading.set(false);
+                    this.error.set(null);
                 },
                 error: (err) => {
                     console.error('Failed to fetch plants:', err);
                     this.loading.set(false);
+                    this.error.set(
+                        'Could not load plants. Check your connection and reload the page.',
+                    );
                 },
             });
     }
 
     addPlant(name: string) {
         if (name === '') return;
-        this.http
-            .post(this.buildUrl('/plants'), { name: name })
-            .subscribe(() => this.refresh());
+        this.mutate(
+            this.http.post(this.buildUrl('/plants'), { name: name }),
+            'Could not add the plant.',
+        );
     }
 
     renamePlant(newName: string, plantId: number) {
-        this.http
-            .patch(this.buildUrl(`/plants/${plantId}`), { name: newName })
-            .subscribe(() => this.refresh());
+        this.mutate(
+            this.http.patch(this.buildUrl(`/plants/${plantId}`), {
+                name: newName,
+            }),
+            'Could not rename the plant.',
+        );
     }
 
     waterPlant(plantId: number, ISODate: string) {
-        this.http
-            .patch(this.buildUrl(`/plants/${plantId}`), {
+        this.mutate(
+            this.http.patch(this.buildUrl(`/plants/${plantId}`), {
                 lastWatered: ISODate,
-            })
-            .subscribe(() => this.refresh());
+            }),
+            'Could not log the watering.',
+        );
     }
 
     deletePlant(plantId: number) {
-        this.http
-            .delete(this.buildUrl(`/plants/${plantId}`))
-            .subscribe(() => this.refresh());
+        this.mutate(
+            this.http.delete(this.buildUrl(`/plants/${plantId}`)),
+            'Could not delete the plant.',
+        );
     }
 
     updatePlantImage(plantId: number, image: File) {
         const formData = new FormData();
         formData.append('image', image);
-        this.http
-            .post<Plant>(this.buildUrl(`/plants/${plantId}/image`), formData)
-            .subscribe(() => this.refresh());
+        this.mutate(
+            this.http.post<Plant>(
+                this.buildUrl(`/plants/${plantId}/image`),
+                formData,
+            ),
+            'Could not upload the image.',
+        );
+    }
+
+    private mutate(request: Observable<unknown>, failureMessage: string) {
+        request.subscribe({
+            next: () => this.refresh(),
+            error: (err) => {
+                console.error(failureMessage, err);
+                this.error.set(failureMessage);
+            },
+        });
     }
 }

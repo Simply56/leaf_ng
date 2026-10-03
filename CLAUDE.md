@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Leaf (`leaf-ng`) is an Angular 21 PWA for tracking when houseplants were last watered. It is a frontend only: all data lives in a separate REST backend (the sibling `../leaf_api` Express server). This repo is one of several frontends for that same API (`../leaf-nest`, `../leaf-start`, `../Leaf`).
+Leaf (`leaf-ng`) is an Angular 22 PWA for tracking when houseplants were last watered. It is a frontend only: all data lives in a separate REST backend (the sibling `../leaf_api` Express server). This repo is one of several frontends for that same API (`../leaf-nest`, `../leaf-start`, `../Leaf`).
 
 ## Commands
 
@@ -17,7 +17,7 @@ npm run format         # prettier --write on src  (format:check to verify)
 npm run deploy         # build + publish to GitHub Pages with --base-href=/leaf_ng/
 ```
 
-There is no test suite. Spec files and Karma were removed on purpose; the `test` targets in `angular.json`/`project.json` and the `tsconfig.spec.json` reference in `tsconfig.json` are leftovers that point at nothing. Verify changes with `npm run lint`, `npm run format:check`, and `npm run build`.
+There is no test suite, on purpose: no spec files, no test runner installed, and no `test` target in `angular.json`. Verify changes with `npm run lint`, `npm run format:check`, and `npm run build`.
 
 `nx.json` and `project.json` are also leftovers — Nx was removed and is not installed. Use the `ng` CLI / npm scripts, and treat `angular.json` as the source of truth for build config.
 
@@ -29,7 +29,9 @@ There is no test suite. Spec files and Karma were removed on purpose; the `test`
 
 ## Architecture
 
-Standalone components, no NgModules, no state library. Zoneless change detection (the Angular 21 default; `zone.js` is not installed), so anything a template shows must be a signal or change in response to a template event — a plain field mutated from a timer, promise or subscription will not re-render.
+Standalone components, no NgModules, no state library. Zoneless change detection (`zone.js` is not installed), so anything a template shows must be a signal or change in response to a template event — a plain field mutated from a timer, promise or subscription will not re-render.
+
+Components use the Angular 22 default change detection strategy, `OnPush` (none sets `changeDetection`), so a component only re-renders when a signal it reads changes, an event fires in its template, or an `@Input` gets a new reference. Keep state in signals and never mutate an `@Input` object in place; `PlantsService.refresh()` already hands out fresh `Plant` objects on every load.
 
 `PlantsService` (root-provided) is the single store and the only place that talks to HTTP. It exposes three signals — `plants`, `loading`, `error` — and components read them directly in templates. The data flow is deliberately simple:
 
@@ -54,5 +56,5 @@ The service worker (`ngsw-config.json`) is enabled only in production builds (`!
 ## Conventions
 
 - 4-space indentation everywhere, single quotes in TypeScript (`.editorconfig`; Prettier picks it up). HTML is formatted with Prettier's `angular` parser.
-- Angular 21 naming: files and classes have no `.component`/`Component` suffix (`plants-overview.ts` exports `PlantsOverview`); services are `*-service.ts`, pipes `*-pipe.ts`.
+- Naming: files and classes have no `.component`/`Component` suffix (`plants-overview.ts` exports `PlantsOverview`); services are `*-service.ts`, pipes `*-pipe.ts`.
 - Templates use the built-in control flow (`@if`, `@for`, `@let`), not structural directives.

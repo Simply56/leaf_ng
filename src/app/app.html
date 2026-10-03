@@ -31,4 +31,19 @@
         </button>
     </div>
 }
+@if (installer.canInstall()) {
+    <div class="install-banner">
+        <span>Install Leaf for quick access from your home screen.</span>
+        <div class="install-actions">
+            <button (click)="installer.install()">Install</button>
+            <button
+                class="install-dismiss"
+                (click)="installer.dismiss()"
+                aria-label="Dismiss install banner"
+            >
+                ✕
+            </button>
+        </div>
+    </div>
+}
 <router-outlet />

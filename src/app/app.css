@@ -19,7 +19,8 @@
     stroke-linejoin: round;
 }
 
-.error-banner {
+.error-banner,
+.install-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -27,10 +28,40 @@
     max-width: min(var(--container-width), calc(100% - 7rem));
     margin: var(--spacing-unit) auto;
     padding: calc(var(--spacing-unit) * 0.75) var(--spacing-unit);
-    background-color: #dc3545;
-    color: white;
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px var(--shadow);
+}
+
+.error-banner {
+    background-color: #dc3545;
+    color: white;
+}
+
+.install-banner {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+}
+
+.install-actions {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.5);
+    flex-shrink: 0;
+}
+
+.install-actions button {
+    margin: 0;
+}
+
+.install-dismiss {
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    color: inherit;
+    line-height: 1;
+}
+
+.install-dismiss:hover {
+    background-color: var(--muted-background);
 }
 
 .error-dismiss {
@@ -46,6 +77,7 @@
 
 @media print {
     .error-banner,
+    .install-banner,
     .theme-toggle {
         display: none;
     }

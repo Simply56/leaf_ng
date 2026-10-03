@@ -15,7 +15,6 @@
                     "options": {
                         "outputPath": "dist/leaf_ng",
                         "browser": "src/main.ts",
-                        "polyfills": ["zone.js"],
                         "tsConfig": "tsconfig.app.json",
                         "assets": [
                             {
